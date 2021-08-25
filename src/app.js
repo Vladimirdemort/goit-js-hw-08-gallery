@@ -63,3 +63,57 @@ const galleryItems = [
     description: 'Lighthouse Coast Sea',
   },
 ];
+
+const imgEl = document.querySelector('.js-gallery');
+const modalEl = document.querySelector('.lightbox');
+const fullImg = document.querySelector('.lightbox__image');
+const closeBtn = document.querySelector('.lightbox__button')
+
+const galleryMaker = el =>{
+
+   return `
+   <li class="gallery__item">
+   <a
+     class="gallery__link"
+     href="${el.original}"
+     rel="noreferrer noopener"
+   >
+     <img
+       class="gallery__image"
+       src="${el.preview}"
+       data-source="${el.original}"
+       alt="${el.description}"
+     />
+   </a>
+ </li>
+ `;
+};
+
+const makeStringsGallery = galleryItems.map(galleryMaker).join('');
+imgEl.insertAdjacentHTML("afterbegin", makeStringsGallery);
+
+
+imgEl.addEventListener('click', onClick);
+function onClick (e) {
+  const source = e.target;
+  e.preventDefault();
+  console.dir(source);
+  if(e.target.nodeName !== 'IMG') {
+    return
+  };
+  modalEl.classList.toggle('is-open');
+  fullImgChanger(source)
+};
+
+closeBtn.addEventListener('click', () => {
+  modalEl.classList.toggle('is-open')
+  fullImg.alt = '';
+  fullImg.src = '';
+});
+
+function fullImgChanger (params) {
+  fullImg.alt = params.alt;
+  fullImg.src = params.dataset.source;
+  
+}
+console.dir(fullImg.alt)
